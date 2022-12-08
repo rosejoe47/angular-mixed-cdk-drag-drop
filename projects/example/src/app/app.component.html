@@ -1,0 +1,69 @@
+<div cdkScrollable>
+  <h3></h3>
+  <div class="example-container">
+    <div class="title">DataSource:</div>
+    <div class="content-container">
+      <div class="flex-box">
+        <div class="circle" *ngFor="let id of ids">{{id}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="example-container">
+    <div class="title">
+      Drag&Drop orientation mixed
+    </div>
+    <div class="content-container" cdkScrollable>
+      <div class="flex-box">
+        <input type="radio" id="horizontal" name="orientation" value="horizontal" [checked]="orientation==='horizontal'" (change)="orientation = $event ? 'horizontal' : 'vertical'"/>
+        <label for="horizontal">Horizontal</label>
+        <input type="radio" id="vertical" name="orientation" value="vertical" (change)="orientation = $event ? 'vertical' : 'horizontal'"/>
+        <label for="vertical">Vertical</label>
+        <label class="flex-box">
+          <input type="checkbox" [checked]="handler" (change)="handler=!handler">
+          Handler
+        </label>
+        <label class="flex-box">
+          PercentHeight:
+          <input [value]="percentHeight" (change)="percentHeight=($any($event.target).value)">
+        </label>
+        <label class="flex-box">
+          percentWidth:
+          <input [value]="percentWidth" (change)="percentWidth=($any($event.target).value)">
+        </label>
+        <button class="btn default addBtn" (click)="onAdd()">Add new ID</button>
+      </div>
+      <div class="mixed-example-list"
+           [style.flexDirection]="orientation === 'horizontal' ? 'row' : 'column'"
+           [style.height]="orientation === 'horizontal' ? '' : '500px'"
+           cdkDropListGroup mixedCdkDragDrop
+           [orientation]="orientation"
+           (dropped)="dropped($event)">
+        <span *ngFor="let id of ids" cdkDropList mixedCdkDropList>
+          <div class="mixed-box"
+               [style.cursor]="handler ? '' : 'move'"
+               cdkDrag mixedCdkDragSizeHelper
+               [percentHeight]="percentHeight"
+               [percentWidth]="percentWidth">
+          {{id}}
+            <div *ngIf="handler" class="example-handle" cdkDragHandle>
+              <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+                <path d="M0 0h24v24H0z" fill="none"></path>
+              </svg>
+            </div>
+        </div>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="example-container">
+    <div class="title">Drag&Drop orientation horizontal</div>
+    <div class="content-container">
+      <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let id of ids" cdkDrag>{{id}}</div>
+      </div>
+    </div>
+  </div>
+</div>
