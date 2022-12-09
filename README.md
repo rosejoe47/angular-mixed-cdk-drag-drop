@@ -70,7 +70,7 @@ MixedCdkDragDropModule.forRoot({ autoScrollStep: 4 });
 
 ## Publish
 ```cmd
-ng build angular-cdk-mixed-drag-drop --prod
+ng build angular-cdk-mixed-drag-drop
 npm publish dist/angular-cdk-mixed-drag-drop
 ```
 
