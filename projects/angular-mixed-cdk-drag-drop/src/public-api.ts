@@ -1,5 +1,5 @@
 /*
- * Public API Surface of angular-cdk-mixed-drag-drop
+ * Public API Surface of angular-mixed-cdk-drag-drop
  */
 
 export * from './lib/mixed-cdk-drag-drop.directive';

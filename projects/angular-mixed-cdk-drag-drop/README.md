@@ -1,6 +1,6 @@
-# AngularCdkMixedDragDrop
+# AngularMixedCdkDragDrop
 
-angular-cdk-mixed-drag-drop is an Angular `Directive` to support mixed orientation drag drop using angular cdk.
+angular-mixed-cdk-drag-drop is an Angular `Directive` to support mixed orientation drag drop using angular cdk.
 
 ## Demo
 
@@ -10,7 +10,7 @@ angular-cdk-mixed-drag-drop is an Angular `Directive` to support mixed orientati
 ## Installation
 
 ```angular2html
-npm install angular-cdk-mixed-drag-drop
+npm install angular-mixed-cdk-drag-drop
 ```
 
 ## Usage
@@ -70,8 +70,8 @@ MixedCdkDragDropModule.forRoot({ autoScrollStep: 4 });
 
 ## Publish
 ```cmd
-ng build angular-cdk-mixed-drag-drop
-npm publish dist/angular-cdk-mixed-drag-drop
+ng build angular-mixed-cdk-drag-drop
+npm publish dist/angular-mixed-cdk-drag-drop
 ```
 
 

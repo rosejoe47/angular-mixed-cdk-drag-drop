@@ -3,23 +3,23 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-cdk-mixed-drag-drop": {
+    "angular-mixed-cdk-drag-drop": {
       "projectType": "library",
-      "root": "projects/angular-cdk-mixed-drag-drop",
-      "sourceRoot": "projects/angular-cdk-mixed-drag-drop/src",
+      "root": "projects/angular-mixed-cdk-drag-drop",
+      "sourceRoot": "projects/angular-mixed-cdk-drag-drop/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/angular-cdk-mixed-drag-drop/ng-package.json"
+            "project": "projects/angular-mixed-cdk-drag-drop/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/angular-cdk-mixed-drag-drop/tsconfig.lib.prod.json"
+              "tsConfig": "projects/angular-mixed-cdk-drag-drop/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/angular-cdk-mixed-drag-drop/tsconfig.lib.json"
+              "tsConfig": "projects/angular-mixed-cdk-drag-drop/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -27,9 +27,9 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/angular-cdk-mixed-drag-drop/src/test.ts",
-            "tsConfig": "projects/angular-cdk-mixed-drag-drop/tsconfig.spec.json",
-            "karmaConfig": "projects/angular-cdk-mixed-drag-drop/karma.conf.js"
+            "main": "projects/angular-mixed-cdk-drag-drop/src/test.ts",
+            "tsConfig": "projects/angular-mixed-cdk-drag-drop/tsconfig.spec.json",
+            "karmaConfig": "projects/angular-mixed-cdk-drag-drop/karma.conf.js"
           }
         }
       }

@@ -3,8 +3,8 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "angular-cdk-mixed-drag-drop": [
-        "dist/angular-cdk-mixed-drag-drop"
+      "angular-mixed-cdk-drag-drop": [
+        "dist/angular-mixed-cdk-drag-drop"
       ]
     },
     "baseUrl": "./",
