@@ -31,6 +31,15 @@
             "tsConfig": "projects/angular-mixed-cdk-drag-drop/tsconfig.spec.json",
             "karmaConfig": "projects/angular-mixed-cdk-drag-drop/karma.conf.js"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/angular-mixed-cdk-drag-drop/**/*.ts",
+              "projects/angular-mixed-cdk-drag-drop/**/*.html"
+            ]
+          }
         }
       }
     },
@@ -130,6 +139,15 @@
               "projects/example/src/styles.scss"
             ],
             "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/example/**/*.ts",
+              "projects/example/**/*.html"
+            ]
           }
         }
       }
