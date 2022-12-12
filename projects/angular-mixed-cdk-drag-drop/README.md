@@ -9,7 +9,7 @@ angular-mixed-cdk-drag-drop is an Angular `Directive` to support mixed orientati
 
 ## Installation
 
-```angular2html
+```cmd
 npm install angular-mixed-cdk-drag-drop
 ```
 
@@ -17,7 +17,7 @@ npm install angular-mixed-cdk-drag-drop
 
 The official cdkDropList is implement like below.
 
-```angular2html
+```html
 <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
   <div class="example-box" *ngFor="let item of items" cdkDrag>{{item}}</div>
 </div>
@@ -30,7 +30,7 @@ To do so with the following few steps.
 2. add additional cdkDropList with `mixedCdkDropList` directive as the parent of every cdkDrag.
 3. you can now be happy to enjoy the mixed cdk drag drop.
 
-```angular2html
+```html
 <div class="example-list"
      cdkDropListGroup mixedCdkDragDrop
      [orientation]="'horizontal'"
@@ -54,7 +54,7 @@ MixedCdkDragSizeHelper directive will help to handle the CdkDrag size in this ca
 3. Set containerSelector in mixedCdkDragDrop if needed. (default value is mixedCdkDragDrop.)
 
 
-```angular2html
+```html
 <div class="example-list"
      cdkDropListGroup mixedCdkDragDrop
      [containerSelector]="'.example-list'">
@@ -68,7 +68,7 @@ MixedCdkDragSizeHelper directive will help to handle the CdkDrag size in this ca
 </div>
 ```
 
-```angularjs
+```typescript
 onSizeChange(event: { drag: CdkDrag; containerSize: DOMRectReadOnly }) {
     MixedCdkDragSizeHelperDirective.defaultEmitter(event, Number(this.percentWidth), Number(this.percentHeight));
 }
@@ -78,7 +78,7 @@ onSizeChange(event: { drag: CdkDrag; containerSize: DOMRectReadOnly }) {
 
 You can use MixedCdkDragDropModule.forRoot to define global settings:
 
-```angularjs
+```typescript
 MixedCdkDragDropModule.forRoot({ autoScrollStep: 4 });
 ```
 
