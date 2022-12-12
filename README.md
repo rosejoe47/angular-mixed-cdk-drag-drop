@@ -39,25 +39,39 @@ To do so with the following few steps.
         <span *ngFor="let item of items" cdkDropList mixedCdkDropList>
           <div class="example-box" cdkDrag>
                 {{item}}
-                <div cdkDragHandle> = </div>
+            <div cdkDragHandle> = </div>
             </div>
         </span>
-      </div>
+</div>
 ```
 
 ### mixedCdkDragSizeHelper
 
 When cdkDrag size is originally depend on its container. Applied mixedCdkDragDrop will break the style by adding additional cdkDropList parent element.
 MixedCdkDragSizeHelper directive will help to handle the CdkDrag size in this case.
-Just applied mixedCdkDragSizeHelper to cdkDrag. (size will depend on the parent cdkDropListGroup container automatically.)
+1. Applied mixedCdkDragSizeHelper to cdkDrag.
+2. ContentBoxSize emitter is required. (default Emitter MixedCdkDragSizeHelperDirective.defaultEmitter is provided.)
+3. Set containerSelector in mixedCdkDragDrop if needed. (default value is mixedCdkDragDrop.)
+
 
 ```angular2html
-<div class="example-box" cdkDrag mixedCdkDragSizeHelper
-               [percentHeight]="percentHeight"
-               [percentWidth]="percentWidth">
+<div class="example-list"
+     cdkDropListGroup mixedCdkDragDrop
+     [containerSelector]="'.example-list'">
+        <span *ngFor="let item of items" cdkDropList mixedCdkDropList>
+          <div class="example-box" cdkDrag mixedCdkDragSizeHelper
+               (contentBoxSize)="onSizeChange($event)">
                 {{item}}
                 <div cdkDragHandle> = </div>
             </div>
+        </span>
+</div>
+```
+
+```angularjs
+onSizeChange(event: { drag: CdkDrag; containerSize: DOMRectReadOnly }) {
+    MixedCdkDragSizeHelperDirective.defaultEmitter(event, Number(this.percentWidth), Number(this.percentHeight));
+}
 ```
 
 ## Global settings
