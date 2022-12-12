@@ -4,23 +4,19 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import {
   MixedCdkDragSizeHelperDirective,
   MixedCdkDragDropDirective,
-  MixedCdkDropListDirective
+  MixedCdkDropListDirective,
 } from './mixed-cdk-drag-drop.directive';
 import { MixedDragDropConfig } from './mixed-drag-drop';
 
 @NgModule({
-  imports: [
-    DragDropModule,
-  ],
-  declarations: [
-    MixedCdkDragDropDirective,
-    MixedCdkDropListDirective,
-    MixedCdkDragSizeHelperDirective,
-  ],
-  exports: [
-    MixedCdkDragDropDirective,
-    MixedCdkDropListDirective,
-    MixedCdkDragSizeHelperDirective,
+  imports: [DragDropModule],
+  declarations: [MixedCdkDragDropDirective, MixedCdkDropListDirective, MixedCdkDragSizeHelperDirective],
+  exports: [MixedCdkDragDropDirective, MixedCdkDropListDirective, MixedCdkDragSizeHelperDirective],
+  providers: [
+    {
+      provide: MixedDragDropConfig,
+      useValue: MixedDragDropConfig,
+    },
   ],
 })
 export class MixedCdkDragDropModule {
@@ -31,8 +27,8 @@ export class MixedCdkDragDropModule {
         {
           provide: MixedDragDropConfig,
           useValue: config,
-        }
-      ]
-    }
+        },
+      ],
+    };
   }
 }

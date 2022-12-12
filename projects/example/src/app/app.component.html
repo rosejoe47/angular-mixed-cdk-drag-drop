@@ -33,18 +33,23 @@
         </label>
         <button class="btn default addBtn" (click)="onAdd()">Add new ID</button>
       </div>
+      <label class="flex-box">Resize with Fixed Width container provide by containerSelector
+        <input id="resizeCheck" type="checkbox" [checked]="resizeCheck" (change)="resizeCheck=!resizeCheck">
+        <input [value]="resizeW" (change)="resizeW=($any($event.target).value)">
+      </label>
+      <div class="resize-container" [style.width]="resizeW + 'px'"></div>
       <div class="mixed-example-list"
            [style.flexDirection]="orientation === 'horizontal' ? 'row' : 'column'"
            [style.height]="orientation === 'horizontal' ? '' : '500px'"
            cdkDropListGroup mixedCdkDragDrop
+           [containerSelector]="resizeCheck ? '.resize-container' : ''"
            [orientation]="orientation"
            (dropped)="dropped($event)">
         <span *ngFor="let id of ids" cdkDropList mixedCdkDropList>
           <div class="mixed-box"
                [style.cursor]="handler ? '' : 'move'"
                cdkDrag mixedCdkDragSizeHelper
-               [percentHeight]="percentHeight"
-               [percentWidth]="percentWidth">
+               (contentBoxSize)="onSizeChange($event)">
           {{id}}
             <div *ngIf="handler" class="example-handle" cdkDragHandle>
               <svg width="24px" fill="currentColor" viewBox="0 0 24 24">

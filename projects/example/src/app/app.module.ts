@@ -7,16 +7,9 @@ import { MixedCdkDragDropModule } from '../../../angular-mixed-cdk-drag-drop/src
 import { AppComponent } from './app.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
-  imports: [
-    BrowserModule,
-    MatCardModule,
-    DragDropModule,
-    MixedCdkDragDropModule.forRoot({ autoScrollStep: 4 }),
-  ],
+  declarations: [AppComponent],
+  imports: [BrowserModule, MatCardModule, DragDropModule, MixedCdkDragDropModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

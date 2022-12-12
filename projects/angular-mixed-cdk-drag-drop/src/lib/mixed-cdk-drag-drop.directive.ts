@@ -3,7 +3,6 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
-  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -11,7 +10,7 @@ import {
   Output,
   Self,
   SimpleChanges,
-  SkipSelf
+  SkipSelf,
 } from '@angular/core';
 import {
   CdkDropList,
@@ -28,27 +27,66 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Directive({
-  selector: '[cdkDropListGroup][mixedCdkDragDrop]',
+  selector: '[cdkDropListGroup][mixedCdkDragDrop]', // eslint-disable-line
 })
-export class MixedCdkDragDropDirective<T = any> implements OnChanges {
+export class MixedCdkDragDropDirective<T = any> implements OnChanges, AfterViewInit, OnDestroy {
   /** @param {EventEmitter} dropped: emit previousIndex and currentIndex when dropList dropped. Valid when itemList is not being provided. **/
-  @Output() readonly dropped: EventEmitter<{previousIndex: number, currentIndex: number}> = new EventEmitter<{previousIndex: number, currentIndex: number}>();
+  @Output() readonly dropped = new EventEmitter<{ previousIndex: number; currentIndex: number }>();
 
   @Input() itemList: T[] | undefined;
   @Input() orientation: DropListOrientation = 'horizontal';
+  @Input() containerSelector = '';
+
+  private readonly _resizeDragItem = new Set<MixedCdkDragSizeHelperDirective>();
 
   private targetIndex = -1;
   private sourceIndex = -1;
   private source: CdkDropList | undefined;
+  private observer: ResizeObserver | undefined;
+  private currentContentRect: DOMRectReadOnly | undefined;
 
   constructor(public element: ElementRef<HTMLElement>, @Self() private cdkDropListGroup: CdkDropListGroup<any>) {
+    this.observer = new ResizeObserver((entries: Array<ResizeObserverEntry>) => {
+      if (entries.length) {
+        const element = this.containerSelector
+          ? entries[0]
+          : entries.find((e: ResizeObserverEntry) => e.target === this.element.nativeElement);
+        if (element) {
+          this.currentContentRect = element.contentRect;
+          for (let item of this._resizeDragItem) {
+            item.onSizeChangeEmit(element.contentRect);
+          }
+        }
+      }
+    });
+  }
+
+  ngAfterViewInit() {
+    this.observeAll();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.cdkDropListGroup._items.forEach((i: CdkDropList) => {
-      i.orientation = this.orientation;
-      i.element.nativeElement.style.flexDirection = this.orientation === 'horizontal' ? 'row' : 'column';
-    });
+    if (changes['orientation']) {
+      this.cdkDropListGroup._items.forEach((i: CdkDropList) => {
+        i.orientation = this.orientation;
+        i.element.nativeElement.style.flexDirection = this.orientation === 'horizontal' ? 'row' : 'column';
+      });
+    }
+    if (changes['containerSelector']) {
+      this.observer?.disconnect();
+      this.observeAll();
+    }
+  }
+
+  addResizeDragItem(item: MixedCdkDragSizeHelperDirective) {
+    this._resizeDragItem.add(item);
+    if (this.currentContentRect) {
+      item.onSizeChangeEmit(this.currentContentRect);
+    }
+  }
+
+  deleteResizeDragItem(item: MixedCdkDragSizeHelperDirective) {
+    this._resizeDragItem.delete(item);
   }
 
   onDropListDropped() {
@@ -61,7 +99,10 @@ export class MixedCdkDragDropDirective<T = any> implements OnChanges {
       if (this.itemList) {
         moveItemInArray(this.itemList, this.sourceIndex, target);
       } else {
-        this.dropped.emit({ previousIndex: this.sourceIndex, currentIndex: target });
+        this.dropped.emit({
+          previousIndex: this.sourceIndex,
+          currentIndex: target,
+        });
       }
       this.sourceIndex = -1;
       this.targetIndex = -1;
@@ -86,21 +127,43 @@ export class MixedCdkDragDropDirective<T = any> implements OnChanges {
     // target index should consider the currentIndex, which indicate drop before/after dropIndex (index of dropList which currently entered).
     this.targetIndex = dropListNodes.indexOf(dropElement) + currentIndex;
   }
+
+  private observeAll() {
+    if (this.containerSelector) {
+      const el = document.querySelector(this.containerSelector);
+      if (el) {
+        this.observer?.observe(el);
+      }
+    } else {
+      this.observer?.observe(this.element.nativeElement);
+    }
+  }
+
+  ngOnDestroy() {
+    this.observer?.disconnect();
+    this.observer = undefined;
+    this.currentContentRect = undefined;
+    this._resizeDragItem.clear();
+  }
 }
 
 @Directive({
-  selector: '[cdkDropList][mixedCdkDropList]',
+  selector: '[cdkDropList][mixedCdkDropList]', // eslint-disable-line
 })
 export class MixedCdkDropListDirective implements OnInit, OnDestroy {
-  lifecycleEmitter = new Subject<void>();
+  private lifecycleEmitter = new Subject<void>();
 
-  constructor(@Self() private cdkDropList: CdkDropList, @SkipSelf() private mixedDragDrop: MixedCdkDragDropDirective, private config: MixedDragDropConfig) {
-  }
+  constructor(
+    @Self() private cdkDropList: CdkDropList,
+    @SkipSelf() private mixedDragDrop: MixedCdkDragDropDirective,
+    private config: MixedDragDropConfig
+  ) {}
 
   ngOnInit() {
     this.cdkDropList.autoScrollStep = this.config.autoScrollStep;
     this.cdkDropList.orientation = this.mixedDragDrop.orientation;
-    this.cdkDropList.element.nativeElement.style.flexDirection = this.mixedDragDrop.orientation === 'horizontal' ? 'row' : 'column';
+    this.cdkDropList.element.nativeElement.style.flexDirection =
+      this.mixedDragDrop.orientation === 'horizontal' ? 'row' : 'column';
     this.cdkDropList.element.nativeElement.style.display = 'flex';
     this.cdkDropList.element.nativeElement.style.flexWrap = 'nowrap';
     this.cdkDropList.element.nativeElement.style.width = 'fit-content';
@@ -123,40 +186,45 @@ export class MixedCdkDropListDirective implements OnInit, OnDestroy {
 }
 
 @Directive({
-  selector: '[cdkDrag][mixedCdkDragSizeHelper]',
+  selector: '[cdkDrag][mixedCdkDragSizeHelper]', // eslint-disable-line
 })
-export class MixedCdkDragSizeHelperDirective implements AfterViewInit, OnChanges {
-  /** @param {number} percentWidth: set width to the percentage based on the dropListGroup Container width, valid from 0 to 100. **/
-  @Input() percentWidth: number | undefined;
-  /** @param {number} percentHeight: set width to the percentage based on the dropListGroup Container width, valid from 0 to 100. **/
-  @Input() percentHeight: number | undefined;
+export class MixedCdkDragSizeHelperDirective implements AfterViewInit, OnDestroy {
+  @Output() contentBoxSize = new EventEmitter<{
+    drag: CdkDrag;
+    containerSize: DOMRectReadOnly;
+  }>();
 
-  constructor(@Self() private cdkDrag: CdkDrag, @SkipSelf() private mixedContainer: MixedCdkDragDropDirective) {
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onWindowResize() {
-    this.resize();
-  }
+  constructor(@Self() private cdkDrag: CdkDrag, @SkipSelf() private mixedContainer: MixedCdkDragDropDirective) {}
 
   ngAfterViewInit() {
-    this.resize();
+    this.mixedContainer.addResizeDragItem(this);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.resize();
+  ngOnDestroy() {
+    this.mixedContainer.deleteResizeDragItem(this);
   }
 
-  private resize() {
-    if (this.percentWidth && !!Number(this.percentWidth)) {
-      this.cdkDrag.element.nativeElement.style.width = `${this.mixedContainer.element.nativeElement.offsetWidth * this.percentWidth / 100}px`;
+  onSizeChangeEmit(rect: DOMRectReadOnly) {
+    this.contentBoxSize?.emit({ drag: this.cdkDrag, containerSize: rect });
+  }
+
+  /** @param {drag: CdkDrag, containerSize: DOMRectReadOnly} event: contentSize observer event.
+   *  @param {number} percentWidth: set width to the percentage based on the dropListGroup Container width, valid from 0 to 100.
+   *  @param {number} percentHeight: set width to the percentage based on the dropListGroup Container width, valid from 0 to 100. **/
+  static defaultEmitter(
+    event: { drag: CdkDrag; containerSize: DOMRectReadOnly },
+    percentWidth: number,
+    percentHeight: number
+  ) {
+    if (percentWidth) {
+      event.drag.element.nativeElement.style.width = `${(percentWidth * event.containerSize.width) / 100}px`;
     } else {
-      this.cdkDrag.element.nativeElement.style.width = '';
+      event.drag.element.nativeElement.style.width = '';
     }
-    if (this.percentHeight && !!Number(this.percentHeight)) {
-      this.cdkDrag.element.nativeElement.style.height = `${this.mixedContainer.element.nativeElement.offsetHeight * this.percentHeight / 100}px`;
+    if (percentHeight) {
+      event.drag.element.nativeElement.style.height = `${(percentHeight * event.containerSize.height) / 100}px`;
     } else {
-      this.cdkDrag.element.nativeElement.style.height = '';
+      event.drag.element.nativeElement.style.height = '';
     }
   }
 }
