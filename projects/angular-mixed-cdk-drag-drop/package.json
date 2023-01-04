@@ -1,6 +1,6 @@
 {
   "name": "angular-mixed-cdk-drag-drop",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "peerDependencies": {
     "@angular/common": "^14.2.0",
     "@angular/core": "^14.2.0",
@@ -14,8 +14,17 @@
     "url": "https://github.com/rosejoe47/angular-mixed-cdk-drag-drop"
   },
   "keywords": [
-    "DragDrop",
+    "angular",
+    "typescript",
+    "cdk",
+    "directive",
+    "flexbox",
+    "grid",
+    "drag",
+    "drag drop",
     "cdk drag drop",
+    "draggable",
+    "dnd",
     "mixed",
     "orientation mixed"
   ],
