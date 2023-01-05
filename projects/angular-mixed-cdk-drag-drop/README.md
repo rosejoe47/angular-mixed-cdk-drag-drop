@@ -13,6 +13,12 @@ angular-mixed-cdk-drag-drop is an Angular `Directive` to support mixed orientati
 npm install angular-mixed-cdk-drag-drop
 ```
 
+## Versions
+* for angular 14 use v1.0.2 / angular14
+```cmd
+npm install angular-mixed-cdk-drag-drop@1.0.2
+```
+
 ## Usage
 
 The official cdkDropList is implement like below.
