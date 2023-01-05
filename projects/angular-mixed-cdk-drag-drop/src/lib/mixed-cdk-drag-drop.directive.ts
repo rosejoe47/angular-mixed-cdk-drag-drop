@@ -44,20 +44,23 @@ export class MixedCdkDragDropDirective<T = any> implements OnChanges, AfterViewI
   private source: CdkDropList | undefined;
   private observer: ResizeObserver | undefined;
   private currentContentRect: DOMRectReadOnly | undefined;
+  private animationFrame: number | undefined;
 
   constructor(public element: ElementRef<HTMLElement>, @Self() private cdkDropListGroup: CdkDropListGroup<any>) {
     this.observer = new ResizeObserver((entries: Array<ResizeObserverEntry>) => {
-      if (entries.length) {
-        const element = this.containerSelector
-          ? entries[0]
-          : entries.find((e: ResizeObserverEntry) => e.target === this.element.nativeElement);
-        if (element) {
-          this.currentContentRect = element.contentRect;
-          for (let item of this._resizeDragItem) {
-            item.onSizeChangeEmit(element.contentRect);
+      this.animationFrame = window.requestAnimationFrame(() => {
+        if (entries.length) {
+          const element = this.containerSelector
+            ? entries[0]
+            : entries.find((e: ResizeObserverEntry) => e.target === this.element.nativeElement);
+          if (element) {
+            this.currentContentRect = element.contentRect;
+            for (let item of this._resizeDragItem) {
+              item.onSizeChangeEmit(element.contentRect);
+            }
           }
         }
-      }
+      });
     });
   }
 
@@ -144,6 +147,9 @@ export class MixedCdkDragDropDirective<T = any> implements OnChanges, AfterViewI
     this.observer = undefined;
     this.currentContentRect = undefined;
     this._resizeDragItem.clear();
+    if (this.animationFrame) {
+      window.cancelAnimationFrame(this.animationFrame);
+    }
   }
 }
 
@@ -157,7 +163,8 @@ export class MixedCdkDropListDirective implements OnInit, OnDestroy {
     @Self() private cdkDropList: CdkDropList,
     @SkipSelf() private mixedDragDrop: MixedCdkDragDropDirective,
     private config: MixedDragDropConfig
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.cdkDropList.autoScrollStep = this.config.autoScrollStep;
@@ -194,7 +201,8 @@ export class MixedCdkDragSizeHelperDirective implements AfterViewInit, OnDestroy
     containerSize: DOMRectReadOnly;
   }>();
 
-  constructor(@Self() private cdkDrag: CdkDrag, @SkipSelf() private mixedContainer: MixedCdkDragDropDirective) {}
+  constructor(@Self() private cdkDrag: CdkDrag, @SkipSelf() private mixedContainer: MixedCdkDragDropDirective) {
+  }
 
   ngAfterViewInit() {
     this.mixedContainer.addResizeDragItem(this);
