@@ -14,6 +14,10 @@ npm install angular-mixed-cdk-drag-drop
 ```
 
 ## Versions
+* for angular 17 use v^2.2.0 / angular17
+```cmd
+npm install angular-mixed-cdk-drag-drop@angular17
+```
 * for angular 16 use v^2.1.0 / angular16
 ```cmd
 npm install angular-mixed-cdk-drag-drop@angular16

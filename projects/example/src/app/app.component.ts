@@ -8,6 +8,9 @@ import { MixedCdkDragSizeHelperDirective } from '../../../angular-mixed-cdk-drag
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  readonly horizontal: DropListOrientation = 'horizontal';
+  readonly vertical: DropListOrientation = 'vertical';
+
   handler = false;
   orientation: DropListOrientation = 'horizontal';
   percentWidth = 25;
