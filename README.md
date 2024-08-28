@@ -14,6 +14,11 @@ npm install angular-mixed-cdk-drag-drop
 ```
 
 ## Versions
+* for angular 18 use v^2.2.4 / angular18
+```cmd
+npm install angular-mixed-cdk-drag-drop@angular18
+```
+
 * for angular 17 use v^2.2.3 / angular17
 ```cmd
 npm install angular-mixed-cdk-drag-drop@angular17
@@ -60,7 +65,7 @@ To do so with the following few steps.
                 <div cdkDragHandle> = </div>
             </div>
         </span>
-      </div>
+</div>
 ```
 
 ### mixedCdkDragSizeHelper
@@ -87,8 +92,8 @@ MixedCdkDragSizeHelper directive will help to handle the CdkDrag size in this ca
 ```
 
 ```typescript
-onSizeChange(event: { drag: CdkDrag; containerSize: DOMRectReadOnly }) {
-    MixedCdkDragSizeHelperDirective.defaultEmitter(event, Number(this.percentWidth), Number(this.percentHeight));
+onSizeChange(event: MixedCdkDragContainerSize) {
+  MixedCdkDragSizeHelperDirective.defaultEmitter(event, Number(this.percentWidth), Number(this.percentHeight));
 }
 ```
 
@@ -110,7 +115,7 @@ npm publish dist/angular-mixed-cdk-drag-drop
 ## License
 
 ```text
-Copyright 2022 Rose Chung
+Copyright 2024 Rose Chung
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

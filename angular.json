@@ -27,17 +27,10 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/angular-mixed-cdk-drag-drop/src/test.ts",
             "tsConfig": "projects/angular-mixed-cdk-drag-drop/tsconfig.spec.json",
-            "karmaConfig": "projects/angular-mixed-cdk-drag-drop/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "projects/angular-mixed-cdk-drag-drop/**/*.ts",
-              "projects/angular-mixed-cdk-drag-drop/**/*.html"
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
             ]
           }
         }
@@ -60,12 +53,16 @@
             "outputPath": "dist/example",
             "index": "projects/example/src/index.html",
             "main": "projects/example/src/main.ts",
-            "polyfills": "projects/example/src/polyfills.ts",
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "projects/example/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/example/src/favicon.ico",
-              "projects/example/src/assets"
+              {
+                "glob": "**/*",
+                "input": "projects/example/public"
+              }
             ],
             "styles": [
               "projects/example/src/styles.scss"
@@ -77,19 +74,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "projects/example/src/environments/environment.ts",
-                  "with": "projects/example/src/environments/environment.prod.ts"
+                  "maximumWarning": "2kB",
+                  "maximumError": "4kB"
                 }
               ],
               "outputHashing": "all"
@@ -97,10 +88,8 @@
             "development": {
               "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -118,50 +107,30 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "example:build"
-          }
+          "builder": "@angular-devkit/build-angular:extract-i18n"
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/example/src/test.ts",
-            "polyfills": "projects/example/src/polyfills.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "projects/example/tsconfig.spec.json",
-            "karmaConfig": "projects/example/karma.conf.js",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/example/src/favicon.ico",
-              "projects/example/src/assets"
+              {
+                "glob": "**/*",
+                "input": "projects/example/public"
+              }
             ],
             "styles": [
               "projects/example/src/styles.scss"
             ],
             "scripts": []
           }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "projects/example/**/*.ts",
-              "projects/example/**/*.html"
-            ]
-          }
         }
       }
-    }
-  },
-  "cli": {
-    "analytics": false
-  },
-  "schematics": {
-    "@angular-eslint/schematics:application": {
-      "setParserOptionsProject": true
-    },
-    "@angular-eslint/schematics:library": {
-      "setParserOptionsProject": true
     }
   }
 }

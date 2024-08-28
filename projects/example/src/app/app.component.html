@@ -4,7 +4,6 @@
     <div class="title">DataSource:</div>
     <div class="content-container">
       <div class="flex-box">
-<!--        <div class="circle" *ngFor="let id of ids">{{ id }}</div>-->
         @for (id of ids; track id) {
           <div class="circle">{{ id }}</div>
         }
@@ -42,7 +41,7 @@
       </label>
       <div class="resize-container" [style.width]="resizeW + 'px'"></div>
       <div class="mixed-example-list"
-           [style.flexDirection]="orientation === horizontal ? 'row' : 'column'"
+           [style.flex-direction]="orientation === horizontal ? 'row' : 'column'"
            [style.height]="orientation === horizontal ? '' : '500px'"
            cdkDropListGroup mixedCdkDragDrop
            [containerSelector]="resizeCheck ? '.resize-container' : ''"

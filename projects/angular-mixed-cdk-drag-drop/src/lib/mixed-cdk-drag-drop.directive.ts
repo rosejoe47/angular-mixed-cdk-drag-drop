@@ -21,13 +21,16 @@ import {
   CdkDropListGroup,
   CdkDrag,
 } from '@angular/cdk/drag-drop';
+
 import { MixedDragDropConfig } from './mixed-drag-drop';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+export interface MixedCdkDragContainerSize { drag: CdkDrag; containerSize: DOMRectReadOnly };
+
 @Directive({
-  selector: '[cdkDropListGroup][mixedCdkDragDrop]', // eslint-disable-line
+  selector: '[cdkDropListGroup][mixedCdkDragDrop]',
 })
 export class MixedCdkDragDropDirective<T = any> implements OnChanges, AfterViewInit, OnDestroy {
   /** @param {EventEmitter} dropped: emit previousIndex and currentIndex when dropList dropped. Valid when itemList is not being provided. **/
@@ -46,7 +49,7 @@ export class MixedCdkDragDropDirective<T = any> implements OnChanges, AfterViewI
   private currentContentRect: DOMRectReadOnly | undefined;
   private animationFrame: number | undefined;
 
-  constructor(public element: ElementRef<HTMLElement>, @Self() private cdkDropListGroup: CdkDropListGroup<any>) {
+  constructor(public element: ElementRef<HTMLElement>, @Self() private cdkDropListGroup: CdkDropListGroup<CdkDropList<T>>) {
     this.observer = new ResizeObserver((entries: Array<ResizeObserverEntry>) => {
       this.animationFrame = window.requestAnimationFrame(() => {
         if (entries.length) {
@@ -70,7 +73,7 @@ export class MixedCdkDragDropDirective<T = any> implements OnChanges, AfterViewI
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['orientation']) {
-      this.cdkDropListGroup._items.forEach((i: CdkDropList) => {
+      this.cdkDropListGroup._items.forEach((i: CdkDropList<T>) => {
         i.orientation = this.orientation;
         i.element.nativeElement.style.flexDirection = this.orientation === 'horizontal' ? 'row' : 'column';
       });
@@ -154,7 +157,7 @@ export class MixedCdkDragDropDirective<T = any> implements OnChanges, AfterViewI
 }
 
 @Directive({
-  selector: '[cdkDropList][mixedCdkDropList]', // eslint-disable-line
+  selector: '[cdkDropList][mixedCdkDropList]',
 })
 export class MixedCdkDropListDirective implements OnInit, OnDestroy {
   private lifecycleEmitter = new Subject<void>();
@@ -193,13 +196,10 @@ export class MixedCdkDropListDirective implements OnInit, OnDestroy {
 }
 
 @Directive({
-  selector: '[cdkDrag][mixedCdkDragSizeHelper]', // eslint-disable-line
+  selector: '[cdkDrag][mixedCdkDragSizeHelper]',
 })
 export class MixedCdkDragSizeHelperDirective implements AfterViewInit, OnDestroy {
-  @Output() contentBoxSize = new EventEmitter<{
-    drag: CdkDrag;
-    containerSize: DOMRectReadOnly;
-  }>();
+  @Output() contentBoxSize = new EventEmitter<MixedCdkDragContainerSize>();
 
   constructor(@Self() private cdkDrag: CdkDrag, @SkipSelf() private mixedContainer: MixedCdkDragDropDirective) {
   }
@@ -213,14 +213,14 @@ export class MixedCdkDragSizeHelperDirective implements AfterViewInit, OnDestroy
   }
 
   onSizeChangeEmit(rect: DOMRectReadOnly) {
-    this.contentBoxSize?.emit({ drag: this.cdkDrag, containerSize: rect });
+    this.contentBoxSize?.emit({ drag: this.cdkDrag, containerSize: rect } as MixedCdkDragContainerSize);
   }
 
-  /** @param {drag: CdkDrag, containerSize: DOMRectReadOnly} event: contentSize observer event.
-   *  @param {number} percentWidth: set width to the percentage based on the dropListGroup Container width, valid from 0 to 100.
-   *  @param {number} percentHeight: set width to the percentage based on the dropListGroup Container width, valid from 0 to 100. **/
+  /** @param event :{MixedCdkDragContainerSize} contentSize observer event.
+   *  @param percentWidth :{number} set width to the percentage based on the dropListGroup Container width, valid from 0 to 100.
+   *  @param percentHeight :{number} set width to the percentage based on the dropListGroup Container width, valid from 0 to 100. **/
   static defaultEmitter(
-    event: { drag: CdkDrag; containerSize: DOMRectReadOnly },
+    event: MixedCdkDragContainerSize,
     percentWidth: number,
     percentHeight: number
   ) {

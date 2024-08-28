@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { CdkDrag, CdkDragDrop, DropListOrientation, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MixedCdkDragSizeHelperDirective } from '../../../angular-mixed-cdk-drag-drop/src/lib/mixed-cdk-drag-drop.directive';
+import { CdkDragDrop, DropListOrientation, moveItemInArray } from '@angular/cdk/drag-drop';
+
+import { MixedCdkDragSizeHelperDirective, MixedCdkDragContainerSize } from '../../../angular-mixed-cdk-drag-drop/src/lib/mixed-cdk-drag-drop.directive';
+
 
 @Component({
   selector: 'app-root',
@@ -27,7 +29,7 @@ export class AppComponent {
     moveItemInArray(this.ids, event.previousIndex, event.currentIndex);
   }
 
-  onSizeChange(event: { drag: CdkDrag; containerSize: DOMRectReadOnly }) {
+  onSizeChange(event: MixedCdkDragContainerSize) {
     MixedCdkDragSizeHelperDirective.defaultEmitter(event, Number(this.percentWidth), Number(this.percentHeight));
   }
 
