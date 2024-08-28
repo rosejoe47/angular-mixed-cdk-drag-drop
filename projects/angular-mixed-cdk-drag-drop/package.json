@@ -1,6 +1,6 @@
 {
   "name": "angular-mixed-cdk-drag-drop",
-  "version": "2.2.3",
+  "version": "2.3.0",
   "peerDependencies": {
     "@angular/cdk": "^18.1.3",
     "@angular/common": "^18.1.0",
@@ -12,7 +12,8 @@
   },
   "sideEffects": false,
   "repository": {
-    "url": "https://github.com/rosejoe47/angular-mixed-cdk-drag-drop"
+    "type": "git",
+    "url": "git+https://github.com/rosejoe47/angular-mixed-cdk-drag-drop.git"
   },
   "keywords": [
     "angular",
