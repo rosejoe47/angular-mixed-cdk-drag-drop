@@ -16,7 +16,7 @@ npm install angular-mixed-cdk-drag-drop
 ```
 
 ## Versions
-* for angular 19 use v^2.3.1 / angular19
+* for angular 19 use v^2.4.0 / angular19
 ```cmd
 npm install angular-mixed-cdk-drag-drop@angular19
 ```

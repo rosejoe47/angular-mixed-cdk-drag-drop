@@ -16,7 +16,7 @@ npm install angular-mixed-cdk-drag-drop
 ```
 
 ## Versions
-* for angular 19 use v^2.3.1 / angular19
+* for angular 19 use v^2.4.0 / angular19
 ```cmd
 npm install angular-mixed-cdk-drag-drop@angular19
 ```
@@ -118,8 +118,20 @@ MixedCdkDragDropModule.forRoot({ autoScrollStep: 4 });
 
 ## Publish
 ```cmd
+# 1. 確保您在專案根目錄
+cd /path/to/your/project
+
+# 2. 構建庫
 ng build angular-mixed-cdk-drag-drop
-npm publish dist/angular-mixed-cdk-drag-drop
+
+# 3. 切換到構建輸出目錄
+cd dist/angular-mixed-cdk-drag-drop
+
+# 4. 檢查 package.json 是否正確
+cat package.json
+
+# 5. 發布
+npm publish
 ```
 
 
