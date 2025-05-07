@@ -30,7 +30,8 @@ import { takeUntil } from 'rxjs/operators';
 export interface MixedCdkDragContainerSize { drag: CdkDrag; containerSize: DOMRectReadOnly };
 
 @Directive({
-  selector: '[cdkDropListGroup][mixedCdkDragDrop]',
+    selector: '[cdkDropListGroup][mixedCdkDragDrop]',
+    standalone: true
 })
 export class MixedCdkDragDropDirective<T = any> implements OnChanges, AfterViewInit, OnDestroy {
   /** @param {EventEmitter} dropped: emit previousIndex and currentIndex when dropList dropped. Valid when itemList is not being provided. **/
@@ -157,7 +158,8 @@ export class MixedCdkDragDropDirective<T = any> implements OnChanges, AfterViewI
 }
 
 @Directive({
-  selector: '[cdkDropList][mixedCdkDropList]',
+    selector: '[cdkDropList][mixedCdkDropList]',
+    standalone: true
 })
 export class MixedCdkDropListDirective implements OnInit, OnDestroy {
   private lifecycleEmitter = new Subject<void>();
@@ -196,7 +198,8 @@ export class MixedCdkDropListDirective implements OnInit, OnDestroy {
 }
 
 @Directive({
-  selector: '[cdkDrag][mixedCdkDragSizeHelper]',
+    selector: '[cdkDrag][mixedCdkDragSizeHelper]',
+    standalone: true
 })
 export class MixedCdkDragSizeHelperDirective implements AfterViewInit, OnDestroy {
   @Output() contentBoxSize = new EventEmitter<MixedCdkDragContainerSize>();

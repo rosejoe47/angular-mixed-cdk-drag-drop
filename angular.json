@@ -51,6 +51,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/example",
+            "preserveSymlinks": true,
             "index": "projects/example/src/index.html",
             "main": "projects/example/src/main.ts",
             "polyfills": [
@@ -86,7 +87,6 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
@@ -132,5 +132,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

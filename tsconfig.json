@@ -9,7 +9,8 @@
       ],
       "angular-mixed-cdk-drag-drop": [
         "./projects/angular-mixed-cdk-drag-drop/src/public-api"
-      ]
+      ],
+      "@lib/*": ["./projects/angular-mixed-cdk-drag-drop/src/lib/*"]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,

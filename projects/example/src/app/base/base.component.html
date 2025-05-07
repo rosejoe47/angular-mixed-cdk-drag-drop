@@ -1,0 +1,82 @@
+<div cdkScrollable>
+  <h3>Module Example</h3>
+  <div class="example-container">
+    <div class="title">DataSource:</div>
+    <div class="content-container">
+      <div class="flex-box">
+        @for (id of ids; track id) {
+          <div class="circle">{{ id }}</div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="example-container">
+    <div class="title">
+      Drag&Drop orientation mixed
+    </div>
+    <div class="content-container" cdkScrollable>
+      <div class="flex-box">
+        <input type="radio" id="horizontal" name="orientation" value="horizontal" [checked]="orientation === horizontal" (change)="orientation = $event ? horizontal : vertical"/>
+        <label for="horizontal">Horizontal</label>
+        <input type="radio" id="vertical" name="orientation" value="vertical" (change)="orientation = $event ? vertical : horizontal"/>
+        <label for="vertical">Vertical</label>
+        <label class="flex-box">
+          <input type="checkbox" [checked]="handler" (change)="handler=!handler">
+          Handler
+        </label>
+        <label class="flex-box">
+          PercentHeight:
+          <input [value]="percentHeight" (change)="percentHeight=($any($event.target).value)">
+        </label>
+        <label class="flex-box">
+          percentWidth:
+          <input [value]="percentWidth" (change)="percentWidth=($any($event.target).value)">
+        </label>
+        <button class="btn default addBtn" (click)="onAdd()">Add new ID</button>
+      </div>
+      <label class="flex-box">Resize with Fixed Width container provide by containerSelector
+        <input id="resizeCheck" type="checkbox" [checked]="resizeCheck" (change)="resizeCheck=!resizeCheck">
+        <input [value]="resizeW" (change)="resizeW=($any($event.target).value)">
+      </label>
+      <div class="resize-container" [style.width]="resizeW + 'px'"></div>
+      <div class="mixed-example-list"
+           [style.flex-direction]="orientation === horizontal ? 'row' : 'column'"
+           [style.height]="orientation === horizontal ? '' : '500px'"
+           cdkDropListGroup mixedCdkDragDrop
+           [containerSelector]="resizeCheck ? '.resize-container' : ''"
+           [orientation]="orientation"
+           (dropped)="dropped($event)">
+        @for (id of ids; track id) {
+          <span cdkDropList mixedCdkDropList>
+            <div class="mixed-box"
+                 [style.cursor]="handler ? '' : 'move'"
+                 cdkDrag mixedCdkDragSizeHelper
+                 (contentBoxSize)="onSizeChange($event)">
+            {{id}}
+              @if (handler) {
+                <div class="example-handle" cdkDragHandle>
+                  <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                  </svg>
+                </div>
+              }
+          </div>
+          </span>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="example-container">
+    <div class="title">Drag&Drop orientation horizontal</div>
+    <div class="content-container">
+      <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+        @for (id of ids; track id) {
+          <div class="example-box" cdkDrag>{{id}}</div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

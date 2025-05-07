@@ -9,9 +9,17 @@ import {
 import { MixedDragDropConfig } from './mixed-drag-drop';
 
 @NgModule({
-  imports: [DragDropModule],
-  declarations: [MixedCdkDragDropDirective, MixedCdkDropListDirective, MixedCdkDragSizeHelperDirective],
-  exports: [MixedCdkDragDropDirective, MixedCdkDropListDirective, MixedCdkDragSizeHelperDirective],
+  imports: [
+    DragDropModule,
+    MixedCdkDragDropDirective,
+    MixedCdkDropListDirective,
+    MixedCdkDragSizeHelperDirective
+  ],
+  exports: [
+    MixedCdkDragDropDirective,
+    MixedCdkDropListDirective,
+    MixedCdkDragSizeHelperDirective
+  ],
   providers: [
     {
       provide: MixedDragDropConfig,
