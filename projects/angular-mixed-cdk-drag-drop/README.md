@@ -2,6 +2,8 @@
 
 angular-mixed-cdk-drag-drop is an Angular `Directive` to support mixed orientation drag drop using angular cdk.
 
+Support Standalone Component and Module.
+
 ## Demo
 
 ![h_demo](https://github.com/rosejoe47/angular-cdk-mixed-drag-drop/blob/v1/s_h_demo.gif)
@@ -14,6 +16,11 @@ npm install angular-mixed-cdk-drag-drop
 ```
 
 ## Versions
+* for angular 19 use v^2.3.1 / angular19
+```cmd
+npm install angular-mixed-cdk-drag-drop@angular19
+```
+
 * for angular 18 use v^2.2.4 / angular18
 ```cmd
 npm install angular-mixed-cdk-drag-drop@angular18
@@ -59,13 +66,15 @@ To do so with the following few steps.
      [orientation]="'horizontal'"
      [itemList]="items"
      (dropped)="dropped($event)">
-        <span *ngFor="let item of items" cdkDropList mixedCdkDropList>
+     @for (item of items; track item.id) {
+        <span cdkDropList mixedCdkDropList>
           <div class="example-box" cdkDrag>
                 {{item}}
                 <div cdkDragHandle> = </div>
-            </div>
+          </div>
         </span>
-      </div>
+     }
+</div>
 ```
 
 ### mixedCdkDragSizeHelper
@@ -81,13 +90,15 @@ MixedCdkDragSizeHelper directive will help to handle the CdkDrag size in this ca
 <div class="example-list"
      cdkDropListGroup mixedCdkDragDrop
      [containerSelector]="'.example-list'">
-        <span *ngFor="let item of items" cdkDropList mixedCdkDropList>
+     @for (item of items; track item.id) {
+        <span cdkDropList mixedCdkDropList>
           <div class="example-box" cdkDrag mixedCdkDragSizeHelper
                (contentBoxSize)="onSizeChange($event)">
                 {{item}}
                 <div cdkDragHandle> = </div>
             </div>
         </span>
+     }
 </div>
 ```
 
@@ -115,7 +126,7 @@ npm publish dist/angular-mixed-cdk-drag-drop
 ## License
 
 ```text
-Copyright 2024 Rose Chung
+Copyright 2025 Rose Chung
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
