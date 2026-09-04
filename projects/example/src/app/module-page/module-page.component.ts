@@ -7,4 +7,6 @@ import { BaseComponent } from '../base/base.component';
   templateUrl: './../base/base.component.html',
   styleUrls: ['./../base/base.component.scss'],
 })
-export class ModulePageComponent extends BaseComponent {}
+export class ModulePageComponent extends BaseComponent {
+  override exampleTitle = 'Module Example (compatibility)';
+}

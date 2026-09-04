@@ -2,7 +2,8 @@
 
 angular-mixed-cdk-drag-drop is an Angular `Directive` to support mixed orientation drag drop using angular cdk.
 
-Support Standalone Component and Module.
+**Recommended API: standalone directives** (+ optional `provideMixedCdkDragDrop()`).  
+`MixedCdkDragDropModule` is still supported for existing NgModule apps.
 
 ## Demo
 
@@ -50,20 +51,39 @@ npm install angular-mixed-cdk-drag-drop@angular14
 
 ## Usage
 
-The official cdkDropList is implement like below.
+### Recommended: Standalone
 
-```html
-<div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
-  <div class="example-box" *ngFor="let item of items" cdkDrag>{{item}}</div>
-</div>
+Import the directives directly into your standalone component. Use `provideMixedCdkDragDrop()` when you want to customize config (defaults work without it).
+
+```typescript
+import { Component } from '@angular/core';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import {
+  MixedCdkDragDropDirective,
+  MixedCdkDropListDirective,
+  MixedCdkDragSizeHelperDirective,
+  provideMixedCdkDragDrop,
+} from 'angular-mixed-cdk-drag-drop';
+
+@Component({
+  standalone: true,
+  imports: [
+    DragDropModule,
+    MixedCdkDragDropDirective,
+    MixedCdkDropListDirective,
+    MixedCdkDragSizeHelperDirective,
+  ],
+  providers: [provideMixedCdkDragDrop({ autoScrollStep: 4 })],
+  templateUrl: './my.component.html',
+})
+export class MyComponent {}
 ```
 
-To use this mixed orientation directive, we need to put every cdkDrag in an individual cdkDropList and grouped all the dropList in a CdkDropListGroup.
-To do so with the following few steps.
+Compared with the official single `cdkDropList`, this mixed-orientation approach puts every `cdkDrag` in its own `cdkDropList`, then groups them with `cdkDropListGroup` + `mixedCdkDragDrop`:
 
-1. change the original CdkDropList to CdkDropListGroup, applied `mixedCdkDragDrop` directive and set orientation(required). (the list group need to be a Flex container which set the style display property to flex.)
-2. add additional cdkDropList with `mixedCdkDropList` directive as the parent of every cdkDrag.
-3. you can now be happy to enjoy the mixed cdk drag drop.
+1. Change the original `CdkDropList` to `CdkDropListGroup`, apply `mixedCdkDragDrop`, and set `orientation` (required). The list group should be a flex container (`display: flex`).
+2. Wrap every `cdkDrag` with an additional `cdkDropList` that also has `mixedCdkDropList`.
+3. Enjoy mixed-orientation CDK drag and drop.
 
 ```html
 <div class="example-list"
@@ -71,89 +91,59 @@ To do so with the following few steps.
      [orientation]="'horizontal'"
      [itemList]="items"
      (dropped)="dropped($event)">
-     @for (item of items; track item.id) {
-        <span cdkDropList mixedCdkDropList>
-          <div class="example-box" cdkDrag>
-                {{item}}
-                <div cdkDragHandle> = </div>
-          </div>
-        </span>
-     }
+  @for (item of items; track item.id) {
+    <span cdkDropList mixedCdkDropList>
+      <div class="example-box" cdkDrag>
+        {{item}}
+        <div cdkDragHandle> = </div>
+      </div>
+    </span>
+  }
 </div>
 ```
 
 ### mixedCdkDragSizeHelper
 
-When cdkDrag size is originally depend on its container. Applied mixedCdkDragDrop will break the style by adding additional cdkDropList parent element.
-MixedCdkDragSizeHelper directive will help to handle the CdkDrag size in this case.
-1. Applied mixedCdkDragSizeHelper to cdkDrag.
-2. ContentBoxSize emitter is required. (default Emitter MixedCdkDragSizeHelperDirective.defaultEmitter is provided.)
-3. Set containerSelector in mixedCdkDragDrop if needed. (default value is mixedCdkDragDrop.)
+When cdkDrag size originally depends on its container, applying mixedCdkDragDrop can break the style by adding an extra cdkDropList parent.
+`MixedCdkDragSizeHelper` helps restore sizing in that case.
 
+1. Apply `mixedCdkDragSizeHelper` to `cdkDrag`.
+2. Handle `contentBoxSize` (default helper: `MixedCdkDragSizeHelperDirective.defaultEmitter`).
+3. Set `containerSelector` on `mixedCdkDragDrop` if needed (default is the mixedCdkDragDrop host).
 
 ```html
 <div class="example-list"
      cdkDropListGroup mixedCdkDragDrop
      [containerSelector]="'.example-list'">
-     @for (item of items; track item.id) {
-        <span cdkDropList mixedCdkDropList>
-          <div class="example-box" cdkDrag mixedCdkDragSizeHelper
-               (contentBoxSize)="onSizeChange($event)">
-                {{item}}
-                <div cdkDragHandle> = </div>
-            </div>
-        </span>
-     }
+  @for (item of items; track item.id) {
+    <span cdkDropList mixedCdkDropList>
+      <div class="example-box" cdkDrag mixedCdkDragSizeHelper
+           (contentBoxSize)="onSizeChange($event)">
+        {{item}}
+        <div cdkDragHandle> = </div>
+      </div>
+    </span>
+  }
 </div>
 ```
 
 ```typescript
 onSizeChange(event: MixedCdkDragContainerSize) {
-    MixedCdkDragSizeHelperDirective.defaultEmitter(event, Number(this.percentWidth), Number(this.percentHeight));
+  MixedCdkDragSizeHelperDirective.defaultEmitter(
+    event,
+    Number(this.percentWidth),
+    Number(this.percentHeight),
+  );
 }
 ```
 
 ## Configuration
 
-`MixedDragDropConfig` controls global behavior. The default `autoScrollStep` is `6`.
+`MixedDragDropConfig` controls global behavior. Default `autoScrollStep` is `6`.
 
-If you do not provide a custom config, the library uses the default values automatically. This is especially important for **standalone** usage, where importing directives directly does not register module providers.
+If you do not provide a custom config, the library falls back to defaults automatically.
 
-### Module
-
-Register global settings with `MixedCdkDragDropModule.forRoot()`:
-
-```typescript
-import { NgModule } from '@angular/core';
-import { MixedCdkDragDropModule } from 'angular-mixed-cdk-drag-drop';
-
-@NgModule({
-  imports: [
-    MixedCdkDragDropModule.forRoot({ autoScrollStep: 4 }),
-  ],
-})
-export class AppModule {}
-```
-
-For a standalone bootstrapped app that still wants to use the NgModule API:
-
-```typescript
-import { bootstrapApplication } from '@angular/platform-browser';
-import { importProvidersFrom } from '@angular/core';
-import { MixedCdkDragDropModule } from 'angular-mixed-cdk-drag-drop';
-
-import { AppComponent } from './app/app.component';
-
-bootstrapApplication(AppComponent, {
-  providers: [
-    importProvidersFrom(MixedCdkDragDropModule.forRoot({ autoScrollStep: 4 })),
-  ],
-});
-```
-
-### Standalone
-
-Use `provideMixedCdkDragDrop()` when importing directives directly.
+### Standalone (recommended)
 
 Application level:
 
@@ -173,20 +163,39 @@ bootstrapApplication(AppComponent, {
 Component level:
 
 ```typescript
-import { Component } from '@angular/core';
-import {
-  MixedCdkDragDropDirective,
-  MixedCdkDropListDirective,
-  provideMixedCdkDragDrop,
-} from 'angular-mixed-cdk-drag-drop';
+providers: [provideMixedCdkDragDrop({ autoScrollStep: 4 })]
+```
 
-@Component({
-  standalone: true,
-  imports: [MixedCdkDragDropDirective, MixedCdkDropListDirective],
-  providers: [provideMixedCdkDragDrop({ autoScrollStep: 4 })],
-  template: `...`,
+### NgModule (compatibility)
+
+For existing NgModule apps, keep using `MixedCdkDragDropModule` / `forRoot()`:
+
+```typescript
+import { NgModule } from '@angular/core';
+import { MixedCdkDragDropModule } from 'angular-mixed-cdk-drag-drop';
+
+@NgModule({
+  imports: [
+    MixedCdkDragDropModule.forRoot({ autoScrollStep: 4 }),
+  ],
 })
-export class MyComponent {}
+export class AppModule {}
+```
+
+Or with a standalone bootstrap that still prefers the NgModule API:
+
+```typescript
+import { bootstrapApplication } from '@angular/platform-browser';
+import { importProvidersFrom } from '@angular/core';
+import { MixedCdkDragDropModule } from 'angular-mixed-cdk-drag-drop';
+
+import { AppComponent } from './app/app.component';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    importProvidersFrom(MixedCdkDragDropModule.forRoot({ autoScrollStep: 4 })),
+  ],
+});
 ```
 
 ## Publish

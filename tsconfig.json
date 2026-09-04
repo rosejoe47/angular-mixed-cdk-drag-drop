@@ -11,6 +11,7 @@
         "./projects/angular-mixed-cdk-drag-drop/src/lib/*"
       ]
     },
+    "rootDir": ".",
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,

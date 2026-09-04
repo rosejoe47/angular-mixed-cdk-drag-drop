@@ -7,13 +7,13 @@ import {
 } from '@angular/cdk/drag-drop';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
-import { 
+import {
   MixedCdkDragDropDirective,
   MixedCdkDropListDirective,
-  MixedCdkDragSizeHelperDirective 
+  MixedCdkDragSizeHelperDirective,
 } from '@lib/mixed-cdk-drag-drop.directive';
+import { provideMixedCdkDragDrop } from '@lib/mixed-drag-drop';
 import { BaseComponent } from '../base/base.component';
-
 
 @Component({
   selector: 'app-standalone-page',
@@ -28,8 +28,10 @@ import { BaseComponent } from '../base/base.component';
     ScrollingModule,
     MixedCdkDragDropDirective,
     MixedCdkDropListDirective,
-    MixedCdkDragSizeHelperDirective
-  ]
+    MixedCdkDragSizeHelperDirective,
+  ],
+  providers: [provideMixedCdkDragDrop()],
 })
 export class StandalonePageComponent extends BaseComponent {
+  override exampleTitle = 'Standalone Example (recommended)';
 }

@@ -6,6 +6,9 @@ export class BaseComponent {
   readonly horizontal: DropListOrientation = 'horizontal';
   readonly vertical: DropListOrientation = 'vertical';
 
+  /** Overridden by each example page. */
+  exampleTitle = 'Example';
+
   handler = false;
   orientation: DropListOrientation = 'horizontal';
   percentWidth = 25;
