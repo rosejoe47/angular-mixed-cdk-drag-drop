@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
   DragDropModule,
   CdkDropList,
@@ -30,6 +30,7 @@ import { BaseComponent } from '../base/base.component';
     MixedCdkDropListDirective,
     MixedCdkDragSizeHelperDirective,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [provideMixedCdkDragDrop()],
 })
 export class StandalonePageComponent extends BaseComponent {

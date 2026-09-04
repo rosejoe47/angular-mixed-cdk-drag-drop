@@ -1,10 +1,10 @@
 {
   "name": "angular-mixed-cdk-drag-drop",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "peerDependencies": {
-    "@angular/cdk": ">=20.0.0 <21",
-    "@angular/common": ">=20.0.0 <21",
-    "@angular/core": ">=20.0.0 <21",
+    "@angular/cdk": ">=21.0.0 <23",
+    "@angular/common": ">=21.0.0 <23",
+    "@angular/core": ">=21.0.0 <23",
     "rxjs": ">=7.8.0 <8"
   },
   "dependencies": {

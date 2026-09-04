@@ -17,6 +17,13 @@ npm install angular-mixed-cdk-drag-drop
 ```
 
 ## Versions
+* for angular 21 / 22 use v^2.6.0 / angular21 or angular22
+```cmd
+npm install angular-mixed-cdk-drag-drop@angular22
+# or
+npm install angular-mixed-cdk-drag-drop@angular21
+```
+
 * for angular 20 use v^2.5.0 / angular20
 ```cmd
 npm install angular-mixed-cdk-drag-drop@angular20
