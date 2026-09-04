@@ -4,9 +4,6 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "@angular/*": [
-        "./node_modules/@angular/*"
-      ],
       "angular-mixed-cdk-drag-drop": [
         "./projects/angular-mixed-cdk-drag-drop/src/public-api"
       ],
@@ -27,6 +24,7 @@
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "importHelpers": true,
+    "useDefineForClassFields": false,
     "target": "ES2022",
     "module": "ES2022",
     "lib": [

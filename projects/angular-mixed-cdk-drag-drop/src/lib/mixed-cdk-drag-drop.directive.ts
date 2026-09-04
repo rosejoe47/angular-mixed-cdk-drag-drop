@@ -3,6 +3,7 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -163,11 +164,12 @@ export class MixedCdkDragDropDirective<T = any> implements OnChanges, AfterViewI
 })
 export class MixedCdkDropListDirective implements OnInit, OnDestroy {
   private lifecycleEmitter = new Subject<void>();
+  private readonly config =
+    inject(MixedDragDropConfig, { optional: true }) ?? new MixedDragDropConfig();
 
   constructor(
     @Self() private cdkDropList: CdkDropList,
     @SkipSelf() private mixedDragDrop: MixedCdkDragDropDirective,
-    private config: MixedDragDropConfig
   ) {
   }
 

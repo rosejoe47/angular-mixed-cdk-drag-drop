@@ -23,7 +23,7 @@ import { MixedDragDropConfig } from './mixed-drag-drop';
   providers: [
     {
       provide: MixedDragDropConfig,
-      useValue: MixedDragDropConfig,
+      useFactory: () => new MixedDragDropConfig(),
     },
   ],
 })

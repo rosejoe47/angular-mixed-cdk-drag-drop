@@ -16,6 +16,11 @@ npm install angular-mixed-cdk-drag-drop
 ```
 
 ## Versions
+* for angular 20 use v^2.5.0 / angular20
+```cmd
+npm install angular-mixed-cdk-drag-drop@angular20
+```
+
 * for angular 19 use v^2.4.0 / angular19
 ```cmd
 npm install angular-mixed-cdk-drag-drop@angular19
@@ -108,12 +113,80 @@ onSizeChange(event: MixedCdkDragContainerSize) {
 }
 ```
 
-## Global settings
+## Configuration
 
-You can use MixedCdkDragDropModule.forRoot to define global settings:
+`MixedDragDropConfig` controls global behavior. The default `autoScrollStep` is `6`.
+
+If you do not provide a custom config, the library uses the default values automatically. This is especially important for **standalone** usage, where importing directives directly does not register module providers.
+
+### Module
+
+Register global settings with `MixedCdkDragDropModule.forRoot()`:
 
 ```typescript
-MixedCdkDragDropModule.forRoot({ autoScrollStep: 4 });
+import { NgModule } from '@angular/core';
+import { MixedCdkDragDropModule } from 'angular-mixed-cdk-drag-drop';
+
+@NgModule({
+  imports: [
+    MixedCdkDragDropModule.forRoot({ autoScrollStep: 4 }),
+  ],
+})
+export class AppModule {}
+```
+
+For a standalone bootstrapped app that still wants to use the NgModule API:
+
+```typescript
+import { bootstrapApplication } from '@angular/platform-browser';
+import { importProvidersFrom } from '@angular/core';
+import { MixedCdkDragDropModule } from 'angular-mixed-cdk-drag-drop';
+
+import { AppComponent } from './app/app.component';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    importProvidersFrom(MixedCdkDragDropModule.forRoot({ autoScrollStep: 4 })),
+  ],
+});
+```
+
+### Standalone
+
+Use `provideMixedCdkDragDrop()` when importing directives directly.
+
+Application level:
+
+```typescript
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideMixedCdkDragDrop } from 'angular-mixed-cdk-drag-drop';
+
+import { AppComponent } from './app/app.component';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideMixedCdkDragDrop({ autoScrollStep: 4 }),
+  ],
+});
+```
+
+Component level:
+
+```typescript
+import { Component } from '@angular/core';
+import {
+  MixedCdkDragDropDirective,
+  MixedCdkDropListDirective,
+  provideMixedCdkDragDrop,
+} from 'angular-mixed-cdk-drag-drop';
+
+@Component({
+  standalone: true,
+  imports: [MixedCdkDragDropDirective, MixedCdkDropListDirective],
+  providers: [provideMixedCdkDragDrop({ autoScrollStep: 4 })],
+  template: `...`,
+})
+export class MyComponent {}
 ```
 
 ## Publish

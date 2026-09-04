@@ -5,6 +5,7 @@ import {
   CdkDropListGroup,
   CdkDrag,
 } from '@angular/cdk/drag-drop';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { 
   MixedCdkDragDropDirective,
@@ -24,10 +25,11 @@ import { BaseComponent } from '../base/base.component';
     CdkDropList,
     CdkDropListGroup,
     CdkDrag,
+    ScrollingModule,
     MixedCdkDragDropDirective,
     MixedCdkDropListDirective,
     MixedCdkDragSizeHelperDirective
   ]
 })
 export class StandalonePageComponent extends BaseComponent {
-} 
+}
